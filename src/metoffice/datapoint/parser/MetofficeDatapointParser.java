@@ -35,9 +35,13 @@ public class MetofficeDatapointParser {
                     //These two don't seem to be available, contrary to what the datapoint guidelines say
                     //queryTextsData(datapointKey, NATIONAL_PARK);
                     //queryTextsData(datapointKey, MOUNTAIN_AREA);
+                } catch (UnknownHostException ex) {
+                    //Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NullPointerException ex) {
+                    //Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (UnknownHostException ex) {
+                } catch (IOException ex) {
                     Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -49,18 +53,13 @@ public class MetofficeDatapointParser {
         timer.schedule(halfHourlyTask, 0l, 1000 * 60 * 15);
     }
 
-    public static void queryTextsData(String datapointKey, String type) throws MalformedURLException, UnknownHostException {
+    public static void queryTextsData(String datapointKey, String type) throws MalformedURLException, UnknownHostException, NullPointerException, IOException {
         // Retrieve the list of locations for which there are textual forecasts available
         String textLocationQuery = "http://datapoint.metoffice.gov.uk/public/data/txt/wxfcs/" + type + "/json/sitelist?key=" + datapointKey;
         URL url = new URL(textLocationQuery);
 
         // read from the URL
-        Scanner scan = null;
-        try {
-            scan = new Scanner(url.openStream());
-        } catch (IOException ex) {
-            Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext()) {
             str += scan.nextLine();
@@ -79,18 +78,13 @@ public class MetofficeDatapointParser {
         }
     }
 
-    public static void queryDailyDataLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException {
+    public static void queryDailyDataLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException, NullPointerException, IOException {
         // Retrieve the forecast data for the specified location
         String dataLocationQuery = "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/" + locationID + "?res=daily&key=" + datapointKey;
         URL url = new URL(dataLocationQuery);
 
         // read from the URL
-        Scanner scan = null;
-        try {
-            scan = new Scanner(url.openStream());
-        } catch (IOException ex) {
-            Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext()) {
             str += scan.nextLine();
@@ -114,18 +108,13 @@ public class MetofficeDatapointParser {
         }
     }
 
-    public static void query3HourlyDataLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException {
+    public static void query3HourlyDataLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException, NullPointerException, IOException {
         // Retrieve the forecast data for the specified location
         String dataLocationQuery = "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/" + locationID + "?res=3hourly&key=" + datapointKey;
         URL url = new URL(dataLocationQuery);
 
         // read from the URL
-        Scanner scan = null;
-        try {
-            scan = new Scanner(url.openStream());
-        } catch (IOException ex) {
-            Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Scanner scan  = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext()) {
             str += scan.nextLine();
@@ -149,18 +138,13 @@ public class MetofficeDatapointParser {
         }
     }
 
-    public static void queryTextLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException {
+    public static void queryTextLocation(String datapointKey, String type, String locationID) throws MalformedURLException, UnknownHostException, NullPointerException, IOException {
         // Retrieve the textual forecast for the specified location
         String textLocationQuery = "http://datapoint.metoffice.gov.uk/public/data/txt/wxfcs/regionalforecast/json/" + locationID + "?key=" + datapointKey;
         URL url = new URL(textLocationQuery);
 
         // read from the URL
-        Scanner scan = null;
-        try {
-            scan = new Scanner(url.openStream());
-        } catch (IOException ex) {
-            Logger.getLogger(MetofficeDatapointParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext()) {
             str += scan.nextLine();
